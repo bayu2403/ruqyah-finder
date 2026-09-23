@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taut Ruqyah — Terhubung dengan ustad ruqyah syari terdekat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12201A;
+    --panel: #1B2B23;
+    --panel-border: #2C3F35;
+    --text: #F2EEE3;
+    --text-dim: #B9C2B9;
+    --gold: #C9A24B;
+    --gold-dim: #8A7238;
+    --error: #D98C6B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    min-height:100vh;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:48px 20px 80px;
+  }
+  header{margin-bottom:40px;}
+  .mark{
+    font-family:'Fraunces', serif;
+    font-size:15px;
+    letter-spacing:0.04em;
+    color:var(--gold);
+    margin:0 0 28px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(28px, 6vw, 38px);
+    line-height:1.25;
+    margin:0 0 14px;
+    color:var(--text);
+  }
+  .lede{
+    color:var(--text-dim);
+    font-size:16px;
+    max-width:52ch;
+    margin:0;
+  }
+  .divider{
+    height:1px;
+    background:var(--panel-border);
+    margin:36px 0;
+    border:none;
+  }
+  form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  label{
+    display:block;
+    font-size:14px;
+    color:var(--text-dim);
+    margin-bottom:8px;
+  }
+  input[type=text], input[type=tel], textarea{
+    width:100%;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:4px;
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    padding:13px 14px;
+  }
+  textarea{resize:vertical; min-height:70px;}
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--gold-dim);
+  }
+  .loc-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .loc-btn{
+    background:none;
+    border:1px solid var(--panel-border);
+    color:var(--text-dim);
+    font-size:14px;
+    padding:9px 14px;
+    border-radius:4px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .loc-btn:hover{border-color:var(--gold-dim); color:var(--text);}
+  .loc-status{font-size:13px; color:var(--text-dim);}
+  .loc-status.ok{color:#8FBF9A;}
+  .submit-btn{
+    margin-top:8px;
+    background:var(--gold);
+    color:#1A1408;
+    border:none;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:16px;
+    padding:15px 20px;
+    border-radius:4px;
+    cursor:pointer;
+  }
+  .submit-btn:disabled{opacity:0.5; cursor:default;}
+  .submit-btn:not(:disabled):hover{background:#D9B25F;}
+  .note{font-size:13px; color:var(--text-dim);}
+  .error-box{
+    background:rgba(217,140,107,0.12);
+    border:1px solid var(--error);
+    color:#F0C4AE;
+    padding:12px 14px;
+    border-radius:4px;
+    font-size:14px;
+    display:none;
+  }
+  #results{margin-top:8px; display:none;}
+  #results h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:20px;
+    margin:0 0 6px;
+  }
+  #results .sub{color:var(--text-dim); font-size:14px; margin:0 0 20px;}
+  .ustad-card{
+    border:1px solid var(--panel-border);
+    padding:18px 18px;
+    margin-bottom:12px;
+  }
+  .ustad-card .name{font-size:17px; font-weight:600; margin:0 0 4px;}
+  .ustad-card .dist{color:var(--gold); font-size:14px; margin:0 0 12px;}
+  .ustad-card .area{color:var(--text-dim); font-size:14px; margin:0 0 12px;}
+  .wa-btn{
+    display:inline-block;
+    background:none;
+    border:1px solid var(--gold-dim);
+    color:var(--gold);
+    text-decoration:none;
+    font-size:14px;
+    padding:9px 16px;
+    border-radius:4px;
+  }
+  .wa-btn:hover{background:rgba(201,162,75,0.1);}
+  .empty-state{
+    border:1px solid var(--panel-border);
+    padding:20px;
+    color:var(--text-dim);
+    font-size:14px;
+  }
+  footer{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--panel-border);
+    color:var(--text-dim);
+    font-size:12.5px;
+    line-height:1.7;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="mark">Taut Ruqyah</p>
+    <h1>Cari ustad ruqyah syari di dekat Anda</h1>
+    <p class="lede">Isi data di bawah, dan kami tunjukkan ustad ruqyah syari terdekat yang bisa langsung Anda hubungi lewat WhatsApp.</p>
+  </header>
+
+  <form id="requestForm">
+    <div>
+      <label for="nama">Nama</label>
+      <input type="text" id="nama" required autocomplete="name">
+    </div>
+
+    <div>
+      <label for="wa">Nomor WhatsApp Anda</label>
+      <input type="tel" id="wa" placeholder="08xxxxxxxxxx" required autocomplete="tel">
+    </div>
+
+    <div>
+      <label for="alamat">Alamat lengkap</label>
+      <textarea id="alamat" placeholder="Jalan, kelurahan/desa, kecamatan, kota" required></textarea>
+    </div>
+
+    <div>
+      <label>Lokasi (untuk mencari ustad terdekat secara akurat)</label>
+      <div class="loc-row">
+        <button type="button" class="loc-btn" id="locBtn">Gunakan lokasi saat ini</button>
+        <span class="loc-status" id="locStatus">Belum diaktifkan — pencarian akan memakai alamat teks saja</span>
+      </div>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Cari ustad terdekat</button>
+    <p class="note">Data Anda hanya dipakai untuk menghubungkan dengan ustad, dan tidak dipublikasikan.</p>
+  </form>
+
+  <div id="results">
+    <hr class="divider">
+    <h2 id="resultsTitle">Ustad yang bisa dihubungi</h2>
+    <p class="sub" id="resultsSub"></p>
+    <div id="resultsList"></div>
+  </div>
+
+  <footer>
+    Taut Ruqyah hanya menghubungkan Anda dengan ustad ruqyah syari yang telah diverifikasi.
+    Kami tidak menjamin hasil ruqyah dan tidak bertindak sebagai pihak medis atau syar'i resmi —
+    keputusan sepenuhnya ada pada Anda dan ustad yang bersangkutan.
+  </footer>
+
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// ---- ISI DENGAN KREDENSIAL SUPABASE ANDA (lihat README.md) ----
+const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+// -----------------------------------------------------------------
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const form = document.getElementById('requestForm');
+const submitBtn = document.getElementById('submitBtn');
+const errorBox = document.getElementById('errorBox');
+const locBtn = document.getElementById('locBtn');
+const locStatus = document.getElementById('locStatus');
+const resultsBox = document.getElementById('results');
+const resultsTitle = document.getElementById('resultsTitle');
+const resultsSub = document.getElementById('resultsSub');
+const resultsList = document.getElementById('resultsList');
+
+let userLat = null;
+let userLng = null;
+
+locBtn.addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    locStatus.textContent = 'Perangkat tidak mendukung deteksi lokasi.';
+    return;
+  }
+  locStatus.textContent = 'Mendeteksi lokasi...';
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      userLat = pos.coords.latitude;
+      userLng = pos.coords.longitude;
+      locStatus.textContent = 'Lokasi terdeteksi — pencarian akan lebih akurat';
+      locStatus.classList.add('ok');
+    },
+    () => {
+      locStatus.textContent = 'Lokasi ditolak — pencarian memakai alamat teks saja';
+    }
+  );
+});
+
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function normalizeWa(input) {
+  let digits = input.replace(/[^0-9]/g, '');
+  if (digits.startsWith('0')) digits = '62' + digits.slice(1);
+  return digits;
+}
+
+function renderUstad(ustad, distanceKm, userNama, userAlamat) {
+  const card = document.createElement('div');
+  card.className = 'ustad-card';
+
+  const distText = distanceKm !== null
+    ? `${distanceKm < 1 ? '<1' : distanceKm.toFixed(1)} km dari lokasi Anda`
+    : (ustad.area || 'Area layanan tidak tercatat');
+
+  const pesan = encodeURIComponent(
+    `Assalamu'alaikum Ustad, saya ${userNama}. Saya mendapat kontak Ustad dari Taut Ruqyah dan ingin bertanya soal ruqyah syari. Alamat saya: ${userAlamat}`
+  );
+
+  card.innerHTML = `
+    <p class="name">${ustad.nama}</p>
+    <p class="dist">${distText}</p>
+    ${distanceKm !== null && ustad.area ? `<p class="area">${ustad.area}</p>` : ''}
+    <a class="wa-btn" target="_blank" rel="noopener"
+       href="https://wa.me/${normalizeWa(ustad.no_wa)}?text=${pesan}">Hubungi via WhatsApp</a>
+  `;
+  return card;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorBox.style.display = 'none';
+  resultsBox.style.display = 'none';
+  resultsList.innerHTML = '';
+
+  const nama = document.getElementById('nama').value.trim();
+  const wa = document.getElementById('wa').value.trim();
+  const alamat = document.getElementById('alamat').value.trim();
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Mencari...';
+
+  try {
+    const { data: ustadList, error } = await supabase
+      .from('ustad')
+      .select('*')
+      .eq('aktif', true)
+      .eq('terverifikasi', true);
+
+    if (error) throw error;
+    if (!ustadList || ustadList.length === 0) {
+      resultsTitle.textContent = 'Belum ada ustad terdaftar';
+      resultsSub.textContent = '';
+      resultsList.innerHTML = '<div class="empty-state">Data ustad belum tersedia di area Anda. Coba lagi nanti.</div>';
+      resultsBox.style.display = 'block';
+      return;
+    }
+
+    let matched;
+    if (userLat !== null && userLng !== null) {
+      matched = ustadList
+        .filter(u => u.lat !== null && u.lng !== null)
+        .map(u => ({ ustad: u, dist: haversineKm(userLat, userLng, u.lat, u.lng) }))
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 3);
+      resultsSub.textContent = 'Diurutkan berdasarkan jarak terdekat dari lokasi Anda.';
+    } else {
+      const alamatLower = alamat.toLowerCase();
+      matched = ustadList
+        .filter(u => u.area && alamatLower.includes(u.area.toLowerCase()))
+        .slice(0, 3)
+        .map(u => ({ ustad: u, dist: null }));
+      if (matched.length === 0) {
+        matched = ustadList.slice(0, 3).map(u => ({ ustad: u, dist: null }));
+      }
+      resultsSub.textContent = 'Dicocokkan berdasarkan alamat. Aktifkan lokasi untuk hasil lebih akurat.';
+    }
+
+    resultsTitle.textContent = matched.length > 0 ? 'Ustad yang bisa dihubungi' : 'Belum ditemukan ustad di area ini';
+    if (matched.length === 0) {
+      resultsList.innerHTML = '<div class="empty-state">Belum ada ustad terverifikasi di area Anda. Coba aktifkan lokasi, atau hubungi kami langsung.</div>';
+    } else {
+      matched.forEach(({ ustad, dist }) => {
+        resultsList.appendChild(renderUstad(ustad, dist, nama, alamat));
+      });
+    }
+    resultsBox.style.display = 'block';
+    resultsBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Catat permintaan (best-effort, tidak menghambat hasil jika gagal)
+    supabase.from('permintaan').insert({
+      nama, no_wa: wa, alamat,
+      lat: userLat, lng: userLng,
+      matched_ustad_id: matched[0]?.ustad?.id || null
+    }).then(() => {});
+
+  } catch (err) {
+    errorBox.textContent = 'Terjadi kendala saat mencari ustad. Silakan coba lagi. (' + err.message + ')';
+    errorBox.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Cari ustad terdekat';
+  }
+});
+</script>
+</body>
+</html>
