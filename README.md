@@ -7,28 +7,26 @@ verification as the main quality gate.
 
 ## Status
 
-Practice/prototype repo, not production-ready. Contains three stages of the
-same idea, at different levels of completeness — see [NOTE.md](NOTE.md) for
-the full breakdown.
+Practice/prototype repo, not production-ready.
 
-⚠️ **Schema is currently out of sync.** The working code
-(`01-prototype-html/`, `02-nextjs-app/`) still uses the old schema
-(`ustad` + `permintaan`, free-text `area`). The final intended schema
+⚠️ **Schema is currently out of sync.** The working app (root `app/`, `lib/`)
+still uses the old schema (`ustad` + `permintaan`, free-text `area`) from
+`legacy/prototype-html/schema.sql`. The final intended schema
 (`pengguna` + `kasus` split, structured provinsi/kabupaten/kecamatan,
 `laporan`, `tindak_lanjut`, screening tables) lives in
-`03-dokumentasi/schema-final.sql` and has **not** been wired into the app
-code yet.
+`docs/schema-final.sql` and has **not** been wired into the app code yet.
 
 ## Structure
 
-- **`01-prototype-html/`** — original build-free prototype: a single
+- **root (`app/`, `lib/`, `package.json`, ...)** — the active Next.js 14 app.
+  Same old schema as above.
+- **`legacy/prototype-html/`** — original build-free prototype: a single
   `index.html` (vanilla JS + Supabase JS client loaded via CDN) plus
-  `schema.sql`. Deployable as a static file, no Node.js needed.
-- **`02-nextjs-app/`** — Next.js 14 rewrite of the same prototype
-  (`npm run build` verified working). Same old schema as above.
-- **`03-dokumentasi/`** — final design docs: `DESIGN.md` (full product/DB
-  design, user flow, screening question draft, MVP scope, safety notes,
-  roadmap) and `schema-final.sql` (the target database schema).
+  `schema.sql`. Deployable as a static file, no Node.js needed. Superseded by
+  the root app but kept for reference.
+- **`docs/`** — final design docs: `DESIGN.md` (full product/DB design, user
+  flow, screening question draft, MVP scope, safety notes, roadmap) and
+  `schema-final.sql` (the target database schema).
 
 ## How matching works (current implementation)
 
@@ -43,23 +41,34 @@ code yet.
 Only ustad with `terverifikasi = true` (manually verified) and `aktif = true`
 are ever shown.
 
-## Next.js app — quick start
+## Quick start
 
 ```bash
-cd 02-nextjs-app
-cp .env.local.example .env.local   # fill in Supabase project URL + anon key
 npm install
 npm run dev
 ```
 
-Requires a Supabase project with `schema.sql` (from the same folder or
-`01-prototype-html/`) applied via the SQL editor, plus at least one verified
-`ustad` row with `lat`/`lng` set.
+No Supabase project needed to try it locally: if `.env.local` isn't set up
+(or still has the placeholder values), `lib/supabaseClient.js` automatically
+falls back to `lib/mockSupabase.js` — an in-memory dummy client seeded with a
+few hardcoded `ustad` rows matching the schema, printing a console warning
+so it's obvious mock data is in use. Inserts (`permintaan`) are logged and
+kept in memory only, not persisted.
+
+To use a real backend instead:
+
+```bash
+cp .env.local.example .env.local   # fill in Supabase project URL + anon key
+```
+
+Requires a Supabase project with `schema.sql` (from `legacy/prototype-html/`)
+applied via the SQL editor, plus at least one verified `ustad` row with
+`lat`/`lng` set.
 
 ## Where the product thinking lives
 
-`03-dokumentasi/DESIGN.md` is the real source of truth for where this is
-headed: a pre-screening questionnaire (to route medical red flags to
-professional help *before* anything ruqyah-related), a `laporan`
-(report/flag) mechanism for ongoing ustad quality control, and post-case
-follow-up — none of which is implemented in the current app code yet.
+`docs/DESIGN.md` is the real source of truth for where this is headed: a
+pre-screening questionnaire (to route medical red flags to professional
+help *before* anything ruqyah-related), a `laporan` (report/flag) mechanism
+for ongoing ustad quality control, and post-case follow-up — none of which
+is implemented in the current app code yet.
