@@ -4,15 +4,16 @@ import { createMockClient } from './mockSupabase';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-const hasRealCredentials =
-  supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('YOUR-PROJECT');
+const hasRealCredentials = Boolean(
+  supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('YOUR-PROJECT')
+);
 
 if (!hasRealCredentials) {
   // No Supabase project configured — fall back to hardcoded dummy data
-  // (lib/mockSupabase.js) so the app still runs locally. See README.md.
+  // (lib/mockSupabase.ts) so the app still runs locally. See README.md.
   console.warn('Supabase env vars belum diisi — pakai dummy data lokal.');
 }
 
 export const supabase = hasRealCredentials
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl as string, supabaseAnonKey as string)
   : createMockClient();

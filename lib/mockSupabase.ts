@@ -1,12 +1,14 @@
 // Dummy in-memory Supabase stand-in for local dev without a real project.
-// Mirrors the subset of the supabase-js query builder that app/page.js uses:
+// Mirrors the subset of the supabase-js query builder that app/page.tsx uses:
 // .from(table).select().eq().eq() and .from(table).insert(). Data shape
 // matches legacy/prototype-html/schema.sql (`ustad` table).
 
-const MOCK_USTAD = [
+import type { Ustad } from './matching';
+
+const MOCK_USTAD: Ustad[] = [
   {
     id: 'mock-1',
-    nama: 'Ustad Contoh Satu',
+    nama: 'Ustadz Ahmad Fauzi, Lc.',
     no_wa: '628123456789',
     area: 'Jakarta Selatan',
     alamat: 'Jalan Contoh No. 1, Jakarta Selatan',
@@ -17,7 +19,7 @@ const MOCK_USTAD = [
   },
   {
     id: 'mock-2',
-    nama: 'Ustad Contoh Dua',
+    nama: 'Ustadz Muhammad Ridwan',
     no_wa: '628987654321',
     area: 'Bandung',
     alamat: 'Jalan Contoh No. 2, Bandung',
@@ -28,7 +30,7 @@ const MOCK_USTAD = [
   },
   {
     id: 'mock-3',
-    nama: 'Ustad Contoh Tiga (belum terverifikasi)',
+    nama: 'Ustadz Contoh Tiga (belum terverifikasi)',
     no_wa: '628111222333',
     area: 'Surabaya',
     alamat: 'Jalan Contoh No. 3, Surabaya',
@@ -39,13 +41,19 @@ const MOCK_USTAD = [
   },
 ];
 
-const TABLES = {
-  ustad: MOCK_USTAD,
+type Row = Record<string, unknown>;
+
+const TABLES: Record<string, Row[]> = {
+  ustad: MOCK_USTAD as unknown as Row[],
   permintaan: [],
 };
 
 class MockQuery {
-  constructor(table) {
+  table: string;
+  rows: Row[];
+  filters: Array<(row: Row) => boolean>;
+
+  constructor(table: string) {
     this.table = table;
     this.rows = TABLES[table] ?? [];
     this.filters = [];
@@ -55,19 +63,19 @@ class MockQuery {
     return this;
   }
 
-  eq(column, value) {
+  eq(column: string, value: unknown) {
     this.filters.push((row) => row[column] === value);
     return this;
   }
 
-  insert(row) {
+  insert(row: Row) {
     const inserted = { id: `mock-${Date.now()}`, created_at: new Date().toISOString(), ...row };
     if (TABLES[this.table]) TABLES[this.table].push(inserted);
     console.log('[mockSupabase] insert (in-memory only, not persisted):', inserted);
     return Promise.resolve({ data: [inserted], error: null });
   }
 
-  then(resolve, reject) {
+  then(resolve: (value: { data: Row[]; error: null }) => void, reject?: (reason: unknown) => void) {
     const data = this.rows.filter((row) => this.filters.every((f) => f(row)));
     return Promise.resolve({ data, error: null }).then(resolve, reject);
   }
@@ -75,7 +83,7 @@ class MockQuery {
 
 export function createMockClient() {
   return {
-    from(table) {
+    from(table: string) {
       return new MockQuery(table);
     },
   };

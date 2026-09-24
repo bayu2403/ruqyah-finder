@@ -1,246 +1,52 @@
-:root {
-  --bg: #12201a;
-  --panel: #1b2b23;
-  --panel-border: #2c3f35;
-  --text: #f2eee3;
-  --text-dim: #b9c2b9;
-  --gold: #c9a24b;
-  --gold-dim: #8a7238;
-  --error: #d98c6b;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 160 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 30% 10%;
+
+    --primary: 160 84% 20%;
+    --primary-foreground: 40 33% 98%;
+
+    --secondary: 150 30% 95%;
+    --secondary-foreground: 160 60% 15%;
+
+    --muted: 150 20% 94%;
+    --muted-foreground: 160 10% 40%;
+
+    --accent: 150 30% 95%;
+    --accent-foreground: 160 60% 15%;
+
+    --gold: 43 65% 52%;
+    --gold-foreground: 40 40% 10%;
+
+    --destructive: 6 70% 62%;
+    --destructive-foreground: 40 33% 98%;
+
+    --border: 150 20% 88%;
+    --input: 150 20% 88%;
+    --ring: 160 84% 20%;
+
+    --radius: 0.75rem;
+  }
 }
 
-* {
-  box-sizing: border-box;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'IBM Plex Sans', sans-serif;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-
-.wrap {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 48px 20px 80px;
-}
-
-header {
-  margin-bottom: 40px;
-}
-
-.mark {
-  font-family: 'Fraunces', serif;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  color: var(--gold);
-  margin: 0 0 28px;
-}
-
-h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: clamp(28px, 6vw, 38px);
-  line-height: 1.25;
-  margin: 0 0 14px;
-  color: var(--text);
-}
-
-.lede {
-  color: var(--text-dim);
-  font-size: 16px;
-  max-width: 52ch;
-  margin: 0;
-}
-
-.divider {
-  height: 1px;
-  background: var(--panel-border);
-  margin: 36px 0;
-  border: none;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-label {
-  display: block;
-  font-size: 14px;
-  color: var(--text-dim);
-  margin-bottom: 8px;
-}
-
-input[type='text'],
-input[type='tel'],
-textarea {
-  width: 100%;
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  border-radius: 4px;
-  color: var(--text);
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 16px;
-  padding: 13px 14px;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 70px;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--gold-dim);
-}
-
-.loc-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.loc-btn {
-  background: none;
-  border: 1px solid var(--panel-border);
-  color: var(--text-dim);
-  font-size: 14px;
-  padding: 9px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.loc-btn:hover {
-  border-color: var(--gold-dim);
-  color: var(--text);
-}
-
-.loc-status {
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-.loc-status.ok {
-  color: #8fbf9a;
-}
-
-.submit-btn {
-  margin-top: 8px;
-  background: var(--gold);
-  color: #1a1408;
-  border: none;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 15px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.submit-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.submit-btn:not(:disabled):hover {
-  background: #d9b25f;
-}
-
-.note {
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-.error-box {
-  background: rgba(217, 140, 107, 0.12);
-  border: 1px solid var(--error);
-  color: #f0c4ae;
-  padding: 12px 14px;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-#results {
-  margin-top: 8px;
-}
-
-#results h2 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 20px;
-  margin: 0 0 6px;
-}
-
-#results .sub {
-  color: var(--text-dim);
-  font-size: 14px;
-  margin: 0 0 20px;
-}
-
-.ustad-card {
-  border: 1px solid var(--panel-border);
-  padding: 18px 18px;
-  margin-bottom: 12px;
-}
-
-.ustad-card .name {
-  font-size: 17px;
-  font-weight: 600;
-  margin: 0 0 4px;
-}
-
-.ustad-card .dist {
-  color: var(--gold);
-  font-size: 14px;
-  margin: 0 0 12px;
-}
-
-.ustad-card .area {
-  color: var(--text-dim);
-  font-size: 14px;
-  margin: 0 0 12px;
-}
-
-.wa-btn {
-  display: inline-block;
-  background: none;
-  border: 1px solid var(--gold-dim);
-  color: var(--gold);
-  text-decoration: none;
-  font-size: 14px;
-  padding: 9px 16px;
-  border-radius: 4px;
-}
-
-.wa-btn:hover {
-  background: rgba(201, 162, 75, 0.1);
-}
-
-.empty-state {
-  border: 1px solid var(--panel-border);
-  padding: 20px;
-  color: var(--text-dim);
-  font-size: 14px;
-}
-
-footer {
-  margin-top: 56px;
-  padding-top: 24px;
-  border-top: 1px solid var(--panel-border);
-  color: var(--text-dim);
-  font-size: 12.5px;
-  line-height: 1.7;
+.bg-hero-pattern {
+  background-image: radial-gradient(circle at 1px 1px, hsl(var(--primary-foreground) / 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
 }
