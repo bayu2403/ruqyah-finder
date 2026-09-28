@@ -13,17 +13,21 @@ const navLinks = [
   { label: 'Tentang', href: '#about' },
 ];
 
-function Logo() {
+function Logo({ light = false }: { light?: boolean }) {
   return (
     <a href="#home" className="flex items-center gap-2.5 group">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
+      <div
+        className={`flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform group-hover:scale-105 ${
+          light ? 'ring-1 ring-primary-foreground/30' : ''
+        }`}
+      >
         <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2}>
           <path d="M12 2L4 7v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-5z" strokeLinejoin="round" />
           <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-      <span className="text-lg font-bold tracking-tight text-foreground">
-        Ruqyah<span className="text-primary">Ku</span>
+      <span className={`text-lg font-bold tracking-tight ${light ? 'text-primary-foreground' : 'text-foreground'}`}>
+        Ruqyah<span className={light ? 'text-gold' : 'text-primary'}>Ku</span>
       </span>
     </a>
   );
@@ -47,7 +51,7 @@ export function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 lg:h-20 items-center justify-between">
-          <Logo />
+          <Logo light={!scrolled} />
 
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
@@ -66,7 +70,11 @@ export function Navbar() {
           <div className="hidden lg:flex items-center gap-2">
             <Button
               variant="outline"
-              className={scrolled ? '' : 'border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'}
+              className={
+                scrolled
+                  ? ''
+                  : 'border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'
+              }
             >
               Masuk
             </Button>

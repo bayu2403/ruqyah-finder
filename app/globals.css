@@ -44,6 +44,15 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* keep anchor targets clear of the fixed navbar */
+  [id] {
+    scroll-margin-top: 5rem;
+  }
 }
 
 .bg-hero-pattern {

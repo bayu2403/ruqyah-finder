@@ -8,11 +8,13 @@ import { normalizeWa, type MatchResult } from '@/lib/matching';
 
 export function UstadzResults({
   results,
+  fallback,
   searched,
   loading,
   error,
 }: {
   results: MatchResult[];
+  fallback: boolean;
   searched: boolean;
   loading: boolean;
   error: string | null;
@@ -28,6 +30,13 @@ export function UstadzResults({
               : 'Cari alamat Anda di atas untuk melihat ustadz ruqyah syari terdekat.'}
           </p>
         </div>
+
+        {searched && !loading && fallback && results.length > 0 && (
+          <div className="mx-auto mb-6 max-w-lg rounded-lg border border-gold/40 bg-gold/10 px-4 py-3 text-center text-sm text-foreground">
+            Belum ada ustadz terverifikasi yang cocok dengan alamat Anda. Berikut ustadz lain yang
+            tersedia — aktifkan lokasi untuk melihat jarak sebenarnya.
+          </div>
+        )}
 
         {error && (
           <div className="mx-auto mb-6 max-w-lg rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-center text-sm text-destructive">

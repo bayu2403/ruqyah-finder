@@ -45,7 +45,7 @@ export function Hero({
   return (
     <section
       id="home"
-      className="relative flex min-h-[calc(100vh-0px)] items-center overflow-hidden pt-28 pb-20 lg:pt-32"
+      className="relative isolate flex min-h-screen items-center overflow-hidden pt-28 pb-20 lg:pt-32"
     >
       <div className="absolute inset-0 -z-20">
         <img src={heroImage} alt="" className="h-full w-full object-cover" />

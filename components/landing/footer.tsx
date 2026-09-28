@@ -39,7 +39,7 @@ const linkColumns = [
   {
     title: 'Bantuan',
     links: [
-      { label: 'Cara Kerja', href: '#home' },
+      { label: 'Cara Kerja', href: '#how-it-works' },
       { label: 'Cari Ustadz', href: '#search' },
       { label: 'Kontak', href: 'mailto:halo@ruqyahku.id' },
     ],

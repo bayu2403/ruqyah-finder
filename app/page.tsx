@@ -15,6 +15,7 @@ import { matchUstad, type MatchResult, type Ustad } from '@/lib/matching';
 
 export default function Home() {
   const [results, setResults] = useState<MatchResult[]>([]);
+  const [fallback, setFallback] = useState(false);
   const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,8 +32,13 @@ export default function Home() {
 
       if (fetchError) throw fetchError;
 
-      const matched = matchUstad((ustadList ?? []) as Ustad[], { userLat: lat, userLng: lng, alamat });
+      const { results: matched, fallback: isFallback } = matchUstad((ustadList ?? []) as Ustad[], {
+        userLat: lat,
+        userLng: lng,
+        alamat,
+      });
       setResults(matched);
+      setFallback(isFallback);
       setSearched(true);
 
       supabase
@@ -53,6 +59,7 @@ export default function Home() {
       setSearched(true);
     } finally {
       setLoading(false);
+      document.getElementById('ustadz-results')?.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
@@ -60,7 +67,13 @@ export default function Home() {
     <main className="min-h-screen bg-background">
       <Navbar />
       <Hero onSearch={handleSearch} loading={loading} />
-      <UstadzResults results={results} searched={searched} loading={loading} error={error} />
+      <UstadzResults
+        results={results}
+        fallback={fallback}
+        searched={searched}
+        loading={loading}
+        error={error}
+      />
       <HowItWorks />
       <Services />
       <About />

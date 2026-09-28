@@ -12,6 +12,8 @@ export type Ustad = {
 
 export type MatchResult = { ustad: Ustad; dist: number | null };
 
+export type MatchOutcome = { results: MatchResult[]; fallback: boolean };
+
 export function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number) {
   const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -33,23 +35,25 @@ export function normalizeWa(input: string) {
 type MatchArgs = { userLat: number | null; userLng: number | null; alamat: string };
 
 // Ambil sampai 3 ustad terdekat/tercocok dari daftar ustad aktif+terverifikasi.
-export function matchUstad(ustadList: Ustad[], { userLat, userLng, alamat }: MatchArgs): MatchResult[] {
+// `fallback` is true when nothing matched the typed address and we're showing
+// other available ustad instead, so the UI can say so.
+export function matchUstad(ustadList: Ustad[], { userLat, userLng, alamat }: MatchArgs): MatchOutcome {
   if (userLat !== null && userLng !== null) {
-    return ustadList
+    const results = ustadList
       .filter((u) => u.lat !== null && u.lng !== null)
       .map((u) => ({ ustad: u, dist: haversineKm(userLat, userLng, u.lat as number, u.lng as number) }))
       .sort((a, b) => (a.dist as number) - (b.dist as number))
       .slice(0, 3);
+    return { results, fallback: false };
   }
 
   const alamatLower = alamat.toLowerCase();
-  let byArea: MatchResult[] = ustadList
+  const byArea: MatchResult[] = ustadList
     .filter((u) => u.area && alamatLower.includes(u.area.toLowerCase()))
     .slice(0, 3)
     .map((u) => ({ ustad: u, dist: null }));
 
-  if (byArea.length === 0) {
-    byArea = ustadList.slice(0, 3).map((u) => ({ ustad: u, dist: null }));
-  }
-  return byArea;
+  if (byArea.length > 0) return { results: byArea, fallback: false };
+
+  return { results: ustadList.slice(0, 3).map((u) => ({ ustad: u, dist: null })), fallback: true };
 }
