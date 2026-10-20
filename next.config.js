@@ -9,6 +9,8 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 const nextConfig = {
   output: 'export',
   basePath,
+  // emit admin/index.html instead of admin.html so /admin works on any static host
+  trailingSlash: true,
   images: {
     unoptimized: true, // next/image optimization needs a server; static export has none
   },

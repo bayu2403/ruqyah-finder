@@ -55,6 +55,28 @@
   }
 }
 
+.rk-user-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: hsl(var(--gold));
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 6px hsl(var(--gold) / 0.3), 0 2px 6px rgb(0 0 0 / 0.3);
+}
+
+.rk-ustadz-pin {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 2px solid #fff;
+  box-shadow: 0 4px 10px rgb(6 60 44 / 0.35);
+}
+
 .bg-hero-pattern {
   background-image: radial-gradient(circle at 1px 1px, hsl(var(--primary-foreground) / 0.08) 1px, transparent 0);
   background-size: 24px 24px;
