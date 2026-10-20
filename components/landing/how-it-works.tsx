@@ -1,20 +1,20 @@
-import { MapPin, UserCheck, MessageCircle } from 'lucide-react';
+import { MapPin, Send, MessageCircle } from 'lucide-react';
 
 const steps = [
   {
     icon: MapPin,
-    title: 'Cari Lokasi Anda',
-    description: 'Masukkan alamat atau aktifkan lokasi otomatis untuk menemukan ustadz di sekitar Anda.',
+    title: 'Tentukan Lokasi',
+    description: 'Gunakan GPS atau pilih wilayah Anda, lalu lihat ustadz terverifikasi yang ada di sekitar Anda.',
   },
   {
-    icon: UserCheck,
-    title: 'Pilih Ustadz Terverifikasi',
-    description: 'Lihat daftar ustadz ruqyah syari yang telah diverifikasi dan terdekat dari lokasi Anda.',
+    icon: Send,
+    title: 'Kirim Permintaan',
+    description: 'Isi nama, nomor WhatsApp, dan jenis layanan. Permintaan Anda masuk ke ustadz terdekat yang tersedia.',
   },
   {
     icon: MessageCircle,
-    title: 'Hubungi via WhatsApp',
-    description: 'Langsung hubungi ustadz pilihan Anda lewat WhatsApp untuk menjadwalkan sesi ruqyah.',
+    title: 'Ustadz Menghubungi Anda',
+    description: 'Ustadz yang mengambil permintaan Anda akan mengirim pesan WhatsApp untuk mengatur waktu ruqyah.',
   },
 ];
 

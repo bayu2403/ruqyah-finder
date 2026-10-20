@@ -1,21 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Menu, X, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent, SheetClose } from '@/components/ui/sheet';
 
 const navLinks = [
-  { label: 'Beranda', href: '#home' },
-  { label: 'Cari Ustadz', href: '#search' },
-  { label: 'Layanan', href: '#services' },
-  { label: 'Testimoni', href: '#testimonials' },
-  { label: 'Tentang', href: '#about' },
+  { label: 'Beranda', href: '/' },
+  { label: 'Cari Ustadz', href: '/#ajukan' },
+  { label: 'Ruqyah Mandiri', href: '/ruqyah-mandiri' },
+  { label: 'Edukasi', href: '/edukasi' },
 ];
 
 function Logo({ light = false }: { light?: boolean }) {
   return (
-    <a href="#home" className="flex items-center gap-2.5 group">
+    <Link href="/" className="flex items-center gap-2.5 group">
       <div
         className={`flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform group-hover:scale-105 ${
           light ? 'ring-1 ring-primary-foreground/30' : ''
@@ -29,12 +29,14 @@ function Logo({ light = false }: { light?: boolean }) {
       <span className={`text-lg font-bold tracking-tight ${light ? 'text-primary-foreground' : 'text-foreground'}`}>
         Ruqyah<span className={light ? 'text-gold' : 'text-primary'}>Ku</span>
       </span>
-    </a>
+    </Link>
   );
 }
 
-export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+// `solid` is for pages without the dark hero behind the navbar.
+export function Navbar({ solid = false }: { solid?: boolean }) {
+  const [scrolledDown, setScrolled] = useState(false);
+  const scrolled = solid || scrolledDown;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -55,7 +57,7 @@ export function Navbar() {
 
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
@@ -63,12 +65,13 @@ export function Navbar() {
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="hidden lg:flex items-center gap-2">
             <Button
+              asChild
               variant="outline"
               className={
                 scrolled
@@ -76,9 +79,11 @@ export function Navbar() {
                   : 'border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'
               }
             >
-              Masuk
+              <Link href="/ustadz">Untuk Ustadz</Link>
             </Button>
-            <Button variant="gold">Daftar</Button>
+            <Button asChild variant="gold">
+              <Link href="/#ajukan">Ajukan Ruqyah</Link>
+            </Button>
           </div>
 
           <Sheet open={open} onOpenChange={setOpen}>
@@ -101,7 +106,7 @@ export function Navbar() {
               </div>
               <nav className="flex flex-col gap-1">
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
@@ -109,12 +114,16 @@ export function Navbar() {
                   >
                     <MapPin className="h-4 w-4 text-primary/50" />
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
               </nav>
               <div className="mt-6 flex flex-col gap-2">
-                <Button variant="outline" className="w-full">Masuk</Button>
-                <Button variant="gold" className="w-full">Daftar</Button>
+                <Button asChild variant="outline" className="w-full">
+                  <Link href="/ustadz" onClick={() => setOpen(false)}>Untuk Ustadz</Link>
+                </Button>
+                <Button asChild variant="gold" className="w-full">
+                  <Link href="/#ajukan" onClick={() => setOpen(false)}>Ajukan Ruqyah</Link>
+                </Button>
               </div>
             </SheetContent>
           </Sheet>

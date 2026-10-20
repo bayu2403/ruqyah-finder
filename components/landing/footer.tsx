@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Mail, Phone } from 'lucide-react';
 
 // lucide-react dropped brand/logo icons (trademark reasons), so social icons
@@ -29,18 +30,19 @@ function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
 
 const linkColumns = [
   {
-    title: 'Perusahaan',
+    title: 'Layanan',
     links: [
-      { label: 'Tentang', href: '#about' },
-      { label: 'Layanan', href: '#services' },
-      { label: 'Testimoni', href: '#testimonials' },
+      { label: 'Ruqyah Mandiri', href: '/ruqyah-mandiri' },
+      { label: 'Edukasi Ruqyah Syar\'i', href: '/edukasi' },
+      { label: 'Untuk Ustadz', href: '/ustadz' },
+      { label: 'Admin Lembaga', href: '/admin' },
     ],
   },
   {
     title: 'Bantuan',
     links: [
-      { label: 'Cara Kerja', href: '#how-it-works' },
-      { label: 'Cari Ustadz', href: '#search' },
+      { label: 'Cara Kerja', href: '/#how-it-works' },
+      { label: 'Cari Ustadz', href: '/#ajukan' },
       { label: 'Kontak', href: 'mailto:halo@ruqyahku.id' },
     ],
   },
@@ -79,9 +81,15 @@ export function Footer() {
               <ul className="space-y-2">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary">
-                      {link.label}
-                    </a>
+                    {link.href.startsWith('/') ? (
+                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-sm text-muted-foreground hover:text-primary">
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

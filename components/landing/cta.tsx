@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export function CTA() {
@@ -14,7 +15,7 @@ export function CTA() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button asChild size="lg" variant="gold">
-              <a href="#search">Cari Ustadz Sekarang</a>
+              <Link href="/#ajukan">Cari Ustadz Sekarang</Link>
             </Button>
             <Button
               asChild
@@ -22,7 +23,7 @@ export function CTA() {
               variant="outline"
               className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
             >
-              <a href="#about">Pelajari Lebih Lanjut</a>
+              <Link href="/edukasi">Kenali Ruqyah Syar&apos;i</Link>
             </Button>
           </div>
         </div>
