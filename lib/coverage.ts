@@ -3,12 +3,12 @@ import { haversineKm, isAvailable, POOL_RADIUS_KM } from '@/lib/matching';
 import type { Kasus, Ustad } from '@/lib/types';
 
 // kosong: requests but no available ustadz within the pool radius (recruit here)
-// padat:  at least PADAT_RATIO requests per available ustadz (add capacity)
+// padat:  at least PADAT_RATIO still-waiting requests per available ustadz (add capacity)
 // cukup:  requests and enough ustadz
 // siap:   ustadz available, no requests yet
 export type CoverageStatus = 'kosong' | 'padat' | 'cukup' | 'siap';
 
-export const PADAT_RATIO = 3;
+export const PADAT_RATIO = 2;
 
 export type CoverageRow = {
   provinsi: string;
@@ -38,12 +38,13 @@ export function coverageByKecamatan(ustadList: Ustad[], kasusList: Kasus[]): Cov
       for (const c of k.kecamatan) {
         const kasus = kasusList.filter((x) => x.kabupaten === k.nama && x.kecamatan === c.nama);
         const permintaan = kasus.length;
+        const menunggu = kasus.filter((x) => x.status === 'menunggu').length;
         const ustadTersedia = available.filter((u) => haversineKm(c.lat, c.lng, u.lat, u.lng) <= POOL_RADIUS_KM).length;
         if (permintaan === 0 && ustadTersedia === 0) continue;
         const status: CoverageStatus =
           permintaan === 0 ? 'siap'
           : ustadTersedia === 0 ? 'kosong'
-          : permintaan / ustadTersedia >= PADAT_RATIO ? 'padat'
+          : menunggu / ustadTersedia >= PADAT_RATIO ? 'padat'
           : 'cukup';
         rows.push({
           provinsi: p.nama,
@@ -52,7 +53,7 @@ export function coverageByKecamatan(ustadList: Ustad[], kasusList: Kasus[]): Cov
           lat: c.lat,
           lng: c.lng,
           permintaan,
-          menunggu: kasus.filter((x) => x.status === 'menunggu').length,
+          menunggu,
           ustadTersedia,
           status,
         });
