@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetTrigger, SheetContent, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetTrigger, SheetContent, SheetClose, SheetTitle } from '@/components/ui/sheet';
 
 const navLinks = [
   { label: 'Beranda', href: '/' },
@@ -95,7 +95,8 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right">
+            <SheetContent side="right" aria-describedby={undefined}>
+              <SheetTitle className="sr-only">Menu</SheetTitle>
               <div className="flex items-center justify-between mb-8">
                 <Logo />
                 <SheetClose asChild>

@@ -64,7 +64,9 @@ npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. To demo the full flow, submit a request on
+Open <http://localhost:3000>. A **Panduan Demo** button on every page walks
+visitors through the three roles (pemohon, ustadz, admin lembaga) and ticks
+each step off as they complete it. To demo the full flow, submit a request on
 `/`, then open `/ustadz/` (pick "Ustadz Ahmad Fauzi" for Jakarta Selatan)
 and `/admin/` in other tabs. "Reset data demo" at the bottom of `/admin/`
 restores the sample data.

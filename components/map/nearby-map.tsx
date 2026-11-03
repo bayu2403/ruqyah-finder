@@ -89,5 +89,6 @@ export function NearbyMap({
     else if (points.length > 1) map.current.fitBounds(L.latLngBounds(points), { padding: [36, 36], maxZoom: 14 });
   }
 
-  return <div ref={el} className={className} role="region" aria-label="Peta ustadz terdekat" />;
+  // isolate keeps Leaflet's z-index 400–1000 layers from rising above the navbar and dialogs
+  return <div ref={el} className={`isolate ${className ?? ''}`} role="region" aria-label="Peta ustadz terdekat" />;
 }

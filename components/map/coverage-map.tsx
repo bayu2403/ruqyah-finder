@@ -98,5 +98,6 @@ export function CoverageMap({
     }
   }
 
-  return <div ref={el} className={className} role="region" aria-label="Peta cakupan ustadz dan permintaan" />;
+  // isolate keeps Leaflet's z-index 400–1000 layers from rising above the navbar and dialogs
+  return <div ref={el} className={`isolate ${className ?? ''}`} role="region" aria-label="Peta cakupan ustadz dan permintaan" />;
 }

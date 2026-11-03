@@ -13,7 +13,7 @@ import type { Kasus, Layanan, PreferensiUstad, SumberLokasi, Ustad } from '@/lib
 const KEY = 'ruqyahku:mock-db:v2';
 const EVENT = 'ruqyahku:mock-db-change';
 
-type DB = { ustad: Ustad[]; kasus: Kasus[] };
+export type DB = { ustad: Ustad[]; kasus: Kasus[] };
 
 function hoursAgo(h: number) {
   return new Date(Date.now() - h * 3_600_000).toISOString();
@@ -238,4 +238,28 @@ export function addUstad(u: Omit<Ustad, 'id'>) {
 
 export function resetDemo() {
   write(freshDb());
+}
+
+// Seed requests that start out already assigned by an admin; excluded so the
+// demo guide only ticks "Tugaskan" after the viewer assigns one themselves.
+const SEED_ADMIN_ASSIGNED = new Set(HISTORY.filter((h) => h[8]).map((h) => `k-seed-${h[0]}`));
+
+export type DemoProgress = {
+  kirim: boolean;
+  ambil: boolean;
+  tugaskan: boolean;
+  tambah: boolean;
+  verifikasi: boolean;
+};
+
+export function demoProgress(db: DB): DemoProgress {
+  const ownKasus = db.kasus.filter((k) => !k.id.startsWith('k-seed'));
+  const added = db.ustad.filter((u) => u.id.startsWith('u-'));
+  return {
+    kirim: ownKasus.length > 0,
+    ambil: ownKasus.some((k) => k.status === 'diambil' && !k.ditugaskan_admin),
+    tugaskan: db.kasus.some((k) => k.ditugaskan_admin && !SEED_ADMIN_ASSIGNED.has(k.id)),
+    tambah: added.length > 0,
+    verifikasi: added.some((u) => u.terverifikasi),
+  };
 }

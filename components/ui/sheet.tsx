@@ -44,7 +44,10 @@ const SheetContent = React.forwardRef<
 ));
 SheetContent.displayName = DialogPrimitive.Content.displayName;
 
-export { Sheet, SheetTrigger, SheetClose, SheetContent };
+const SheetTitle = DialogPrimitive.Title;
+const SheetDescription = DialogPrimitive.Description;
+
+export { Sheet, SheetTrigger, SheetClose, SheetContent, SheetTitle, SheetDescription };
 
 export function SheetCloseButton() {
   return (

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Amiri } from 'next/font/google';
+import { DemoGuide } from '@/components/demo-guide';
 import './globals.css';
 
 const sans = Plus_Jakarta_Sans({
@@ -24,7 +25,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={`${sans.variable} ${arabic.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {children}
+        <DemoGuide />
+      </body>
     </html>
   );
 }
