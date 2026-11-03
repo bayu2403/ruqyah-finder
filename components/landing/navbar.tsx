@@ -16,7 +16,7 @@ const navLinks = [
 function Logo() {
   return (
     <Link href="/" className="group flex items-center gap-2.5">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/30">
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden="true">
           <path d="M12 2L4 7v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-5z" strokeLinejoin="round" />
           <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
@@ -56,7 +56,7 @@ export function Navbar(_props: { solid?: boolean } = {}) {
             <Button asChild variant="ghost" className="rounded-full">
               <Link href="/ustadz">Untuk Ustadz</Link>
             </Button>
-            <Button asChild variant="gold" className="rk-shine rounded-full px-6">
+            <Button asChild variant="gold" className="rounded-full px-6">
               <Link href="/#ajukan">Ajukan Ruqyah</Link>
             </Button>
           </div>

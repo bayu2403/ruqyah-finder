@@ -82,105 +82,43 @@
   background-size: 24px 24px;
 }
 
-/* ---------- Motion (design system: duration-* and easing tokens) ---------- */
+/* ---------- Motion ----------
+   Natural, not decorative: content fades in once with a short rise, state
+   changes cross-fade, nothing loops except the "you are here" pulse. */
 :root {
   --duration-fast: 150ms;
   --duration-base: 250ms;
-  --duration-slow: 500ms;
-  --duration-enter: 800ms;
-  --duration-pulse: 2400ms;
-  --duration-ambient: 60s;
-  --ease-standard: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --ease-spring: cubic-bezier(0.3, 1.4, 0.5, 1);
-  --ease-draw: cubic-bezier(0.6, 0, 0.2, 1);
+  --duration-enter: 600ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-@keyframes rk-fade-up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
-@keyframes rk-drift { to { background-position: 240px 120px; } }
-@keyframes rk-rotate { to { transform: rotate(360deg); } }
-@keyframes rk-pop { 0% { opacity: 0; transform: scale(0.2); } 70% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
-@keyframes rk-pulse { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(4.4); } }
-@keyframes rk-float { 50% { transform: translateY(-12px); } }
-@keyframes rk-marquee { to { transform: translateX(-50%); } }
-@keyframes rk-shine { 0%, 55% { transform: translateX(-130%); } 100% { transform: translateX(130%); } }
-@keyframes rk-sheen { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-@keyframes rk-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@keyframes rk-blink { 50% { opacity: 0.25; } }
-@keyframes rk-reveal { from { opacity: 0; transform: perspective(700px) rotateX(-18deg) translateY(10px); } to { opacity: 1; transform: none; } }
-@keyframes rk-breathe { 50% { transform: scale(1.08); opacity: 0.85; } }
-@keyframes rk-shackle { 0%, 70%, 100% { transform: translateY(0); } 80%, 90% { transform: translateY(-3px); } }
-@keyframes rk-march { to { stroke-dashoffset: -32; } }
+@keyframes rk-fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes rk-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rk-pulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(3); } }
 
-.rk-enter { animation: rk-fade-up var(--duration-enter) var(--ease-standard) both; animation-delay: calc(var(--i, 0) * 120ms + 100ms); }
+.rk-enter { animation: rk-fade-up var(--duration-enter) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms + 60ms); }
+.rk-fade { animation: rk-fade var(--duration-base) ease-out both; }
 @supports (animation-timeline: view()) {
-  .rk-reveal { animation: rk-fade-up linear both; animation-timeline: view(); animation-range: entry 5% cover 28%; }
-  .rk-rail path { animation: rk-draw linear both; animation-timeline: view(); animation-range: entry 25% cover 45%; }
+  .rk-reveal { animation: rk-fade-up linear both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
 }
+.rk-ring { transform-box: fill-box; transform-origin: center; animation: rk-pulse 3s ease-out infinite; }
 
-.rk-dots::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle at 1px 1px, rgb(251 249 245 / 0.1) 1.4px, transparent 0); background-size: 24px 24px; animation: rk-drift var(--duration-ambient) linear infinite; }
-.rk-glow::after { content: ""; position: absolute; width: 900px; height: 900px; right: -260px; top: -200px; border-radius: 50%; background: radial-gradient(circle, rgb(214 160 57 / 0.16), transparent 62%); pointer-events: none; }
-
-.rk-shine { position: relative; overflow: hidden; }
-.rk-shine::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.5) 50%, transparent 65%); transform: translateX(-130%); animation: rk-shine 4.5s 2s ease-in-out infinite; pointer-events: none; }
-.rk-sheen { background: linear-gradient(90deg, #d6a039, #f3d38f 45%, #d6a039 70%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rk-sheen 7s linear infinite; }
-.rk-breathe { animation: rk-breathe 1.8s ease-in-out infinite; }
-.rk-float { animation: rk-float 7s ease-in-out infinite; }
-.rk-blink i { animation: rk-blink 1s infinite; }
-.rk-blink i:nth-child(2) { animation-delay: 0.2s; }
-.rk-blink i:nth-child(3) { animation-delay: 0.4s; }
-.rk-shackle { animation: rk-shackle 3.5s ease-in-out infinite; }
-.rk-open { animation: rk-reveal var(--duration-slow) var(--ease-standard) both; transform-origin: top center; }
-.rk-pop { transform-box: fill-box; transform-origin: center; animation: rk-pop 0.6s var(--ease-spring) both; animation-delay: calc(var(--i, 0) * 160ms + 300ms); }
-.rk-ring { transform-box: fill-box; transform-origin: center; animation: rk-pulse var(--duration-pulse) ease-out infinite; }
-.rk-route { stroke-dasharray: 7 9; animation: rk-march 1.2s linear infinite; }
-
-/* Hero stage: radar rings with orbiting ustadz pins */
-.rk-rings { position: absolute; left: 50%; top: 50%; width: 600px; height: 600px; translate: -50% -50%; pointer-events: none; }
-.rk-rings > span { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgb(251 249 245 / 0.22); animation: rk-rotate 60s linear infinite; }
-.rk-rings > span:nth-child(2) { inset: 80px; border-color: rgb(214 160 57 / 0.35); animation-duration: 40s; animation-direction: reverse; }
-.rk-rings > span:nth-child(3) { inset: 160px; border-style: solid; border-color: rgb(251 249 245 / 0.12); animation: none; }
-.rk-orbit-pin { position: absolute; top: -13px; left: calc(50% - 13px); width: 26px; height: 26px; border-radius: 50%; background: hsl(var(--primary)); border: 3px solid hsl(var(--background)); box-shadow: 0 0 22px rgb(214 160 57 / 0.55); display: grid; place-items: center; animation: rk-pop 0.6s var(--ease-spring) both; animation-delay: calc(var(--i, 0) * 150ms + 900ms); }
-.rk-sweep { position: absolute; left: 50%; top: 50%; width: 460px; height: 460px; translate: -50% -50%; border-radius: 50%; background: conic-gradient(from 0deg, rgb(214 160 57 / 0) 0deg, rgb(214 160 57 / 0.22) 46deg, rgb(214 160 57 / 0) 48deg); animation: rk-rotate 5s linear infinite; pointer-events: none; }
-@media (max-width: 640px) {
-  .rk-rings { width: 420px; height: 420px; }
-  .rk-rings > span:nth-child(2) { inset: 60px; }
-  .rk-rings > span:nth-child(3) { inset: 120px; }
-  .rk-sweep { width: 330px; height: 330px; }
-}
-
-/* Hero phone: the request flow on a loop */
-.rk-phone .rk-step-bar::after { content: ""; position: absolute; inset: 0; background: hsl(var(--primary)); transform: scaleX(0); transform-origin: left; transition: transform var(--duration-slow) var(--ease-standard); }
+/* Hero phone: screens cross-fade as the request moves along */
+.rk-phone .rk-step-bar::after { content: ""; position: absolute; inset: 0; background: hsl(var(--primary)); transform: scaleX(0); transform-origin: left; transition: transform 400ms var(--ease-out); }
 .rk-phone[data-step="1"] .rk-step-bar:nth-child(-n + 1)::after,
 .rk-phone[data-step="2"] .rk-step-bar:nth-child(-n + 2)::after,
 .rk-phone[data-step="3"] .rk-step-bar::after { transform: scaleX(1); }
-.rk-phone .rk-mpin { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.rk-phone:not([data-step="0"]) .rk-mpin { animation: rk-pop 0.5s var(--ease-spring) both; animation-delay: calc(var(--i, 0) * 120ms); }
-.rk-phone .rk-scan { transform-box: view-box; transform-origin: 150px 105px; animation: rk-rotate 1.6s linear infinite; transition: opacity 0.3s; }
-.rk-phone:not([data-step="0"]) .rk-scan { opacity: 0; }
-.rk-phone .rk-panel { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ease-standard), transform 0.4s var(--ease-standard); }
+.rk-phone .rk-mpin { opacity: 0; transition: opacity 400ms ease-out; }
+.rk-phone:not([data-step="0"]) .rk-mpin { opacity: 1; transition-delay: calc(var(--i, 0) * 60ms); }
+.rk-phone .rk-panel { opacity: 0; transition: opacity 350ms ease-out; }
 .rk-phone[data-step="0"] .rk-panel[data-s="0"],
 .rk-phone[data-step="1"] .rk-panel[data-s="1"],
 .rk-phone[data-step="2"] .rk-panel[data-s="2"],
-.rk-phone[data-step="3"] .rk-panel[data-s="3"] { opacity: 1; transform: none; }
-
-.rk-ticker-track { animation: rk-marquee 40s linear infinite; }
-.rk-ticker:hover .rk-ticker-track { animation-play-state: paused; }
-
-/* Bento tiles: tilt toward the cursor with a following glow */
-.rk-tile { --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg; transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform 0.25s var(--ease-standard), box-shadow 0.25s ease-out, border-color 0.25s; }
-.rk-tile::before { content: ""; position: absolute; inset: 0; background: radial-gradient(420px circle at var(--mx) var(--my), rgb(214 160 57 / 0.16), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
-.rk-tile:hover { box-shadow: 0 30px 50px -28px rgb(6 60 44 / 0.45); }
-.rk-tile:hover::before { opacity: 1; }
-
-.rk-cov-ok { animation: rk-breathe 3s ease-in-out infinite; }
-.rk-cov-gap { animation: rk-breathe 1.6s ease-in-out infinite; }
+.rk-phone[data-step="3"] .rk-panel[data-s="3"] { opacity: 1; }
 
 .rk-faq summary::-webkit-details-marker { display: none; }
-.rk-faq summary::after { content: ""; flex: none; width: 10px; height: 10px; border-right: 2px solid hsl(var(--primary)); border-bottom: 2px solid hsl(var(--primary)); transform: rotate(45deg) translateY(-3px); transition: transform 0.3s var(--ease-spring); }
+.rk-faq summary::after { content: ""; flex: none; width: 10px; height: 10px; border-right: 2px solid hsl(var(--primary)); border-bottom: 2px solid hsl(var(--primary)); transform: rotate(45deg) translateY(-3px); transition: transform 200ms ease-out; }
 .rk-faq details[open] summary::after { transform: rotate(-135deg); }
-.rk-faq details[open] > p { animation: rk-fade-up 0.4s var(--ease-standard) both; }
-
-.rk-cta::after { content: ""; position: absolute; inset: -50%; background: linear-gradient(115deg, transparent 42%, rgb(214 160 57 / 0.14) 50%, transparent 58%); animation: rk-shine 7s ease-in-out infinite; pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 0ms !important; scroll-behavior: auto !important; }

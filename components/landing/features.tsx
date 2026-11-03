@@ -1,38 +1,17 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Loader2, Lock, MessageCircle, ShieldCheck } from 'lucide-react';
 import { SectionHead } from '@/components/landing/section-head';
-import { CountUp, prefersReducedMotion } from '@/components/motion/count-up';
+import { prefersReducedMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 function Tile({ className, dark, children }: { className?: string; dark?: boolean; children: React.ReactNode }) {
-  const ref = useRef<HTMLElement>(null);
-
-  function move(e: React.PointerEvent) {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width;
-    const y = (e.clientY - r.top) / r.height;
-    el.style.setProperty('--mx', `${x * 100}%`);
-    el.style.setProperty('--my', `${y * 100}%`);
-    el.style.setProperty('--ry', `${(x - 0.5) * 6}deg`);
-    el.style.setProperty('--rx', `${(0.5 - y) * 6}deg`);
-  }
-  function leave() {
-    ref.current?.style.setProperty('--rx', '0deg');
-    ref.current?.style.setProperty('--ry', '0deg');
-  }
-
   return (
     <article
-      ref={ref}
-      onPointerMove={move}
-      onPointerLeave={leave}
       className={cn(
-        'rk-tile rk-reveal relative flex flex-col gap-3.5 overflow-hidden rounded-[26px] border p-6',
+        'rk-reveal relative flex flex-col gap-3.5 overflow-hidden rounded-[26px] border p-6 transition-colors duration-200',
         dark ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-[#c5d3ca]',
         className
       )}
@@ -75,19 +54,18 @@ function MapTile() {
           <path d="M-10 290 C 110 240, 200 320, 320 270 S 520 190, 660 236" fill="none" stroke="#cfe2e8" strokeWidth="18" strokeLinecap="round" />
           <g stroke="#fff" strokeWidth="7" fill="none"><path d="M0 142h640M212 0v340M380 0v340M0 196h160" /></g>
           <circle cx="320" cy="170" r="92" fill="#063c2c" fillOpacity=".05" stroke="#063c2c" strokeOpacity=".22" strokeDasharray="5 7" />
-          <path className="rk-route" d="M320 170 C 280 140, 230 120, 190 106 S 150 96, 140 92" fill="none" stroke="#d6a039" strokeWidth="4" strokeLinecap="round" />
+          <path strokeDasharray="7 9" d="M320 170 C 280 140, 230 120, 190 106 S 150 96, 140 92" fill="none" stroke="#d6a039" strokeWidth="4" strokeLinecap="round" />
           {MAP_PINS.map(([cx, cy], i) => (
-            <g key={i} className="rk-pop" style={{ ['--i' as string]: i }}>
+            <g key={i}>
               <circle cx={cx} cy={cy} r="34" fill="#063c2c" fillOpacity=".08" />
               <circle cx={cx} cy={cy} r="16" fill="#063c2c" stroke="#fff" strokeWidth="3.5" />
             </g>
           ))}
-          <circle className="rk-ring" cx="320" cy="170" r="10" fill="none" stroke="#d6a039" strokeWidth="3" />
           <circle cx="320" cy="170" r="11" fill="#d6a039" stroke="#fff" strokeWidth="4" />
         </svg>
         <div className="absolute inset-x-3.5 bottom-3.5 flex items-center gap-2.5 rounded-[14px] bg-background/90 px-3.5 py-3 text-[15px] font-bold backdrop-blur">
           <ShieldCheck className="h-5 w-5 shrink-0 text-[#8a6418]" />
-          <span>Contoh: Alhamdulillah, <CountUp to={5} /> ustadz dalam ±6 km</span>
+          <span>Contoh: Alhamdulillah, 5 ustadz dalam ±6 km</span>
         </div>
       </div>
       <TileLink href="/#ajukan">Coba cari ustadz</TileLink>
@@ -109,7 +87,7 @@ function AmbilTile() {
       <h3 className="text-[21px] font-extrabold leading-tight tracking-tight">Diambil satu ustadz saja</h3>
       <div className="flex flex-1 flex-col justify-center">
         {state === 'taken' ? (
-          <div className="rk-open rounded-[18px] border-2 border-primary bg-background p-3.5" role="status">
+          <div className="rk-fade rounded-[18px] border-2 border-primary bg-background p-3.5" role="status">
             <p className="text-[15px] font-extrabold">Rina (contoh)</p>
             <p className="text-[12.5px] text-muted-foreground">0812-0000-0902 · Tebet</p>
             <p className="mt-2 text-[13px]">“Sering mimpi buruk dan gelisah setiap malam.”</p>
@@ -175,7 +153,7 @@ function EdukasiTile() {
         <span
           aria-hidden="true"
           className={cn(
-            'absolute bottom-1 left-1 top-1 w-[calc(50%-4px)] rounded-full bg-primary transition-transform duration-300 [transition-timing-function:var(--ease-spring)]',
+            'absolute bottom-1 left-1 top-1 w-[calc(50%-4px)] rounded-full bg-primary transition-transform duration-200 ease-out',
             bad && 'translate-x-full'
           )}
         />
@@ -192,11 +170,10 @@ function EdukasiTile() {
         ))}
       </div>
       <ul key={String(bad)} className="grid gap-2">
-        {items.map((t, i) => (
+        {items.map((t) => (
           <li
             key={t}
-            className={cn('rk-enter rounded-xl px-3 py-2.5 text-[14.5px]', bad ? 'bg-[#fdf3f0]' : 'bg-background')}
-            style={{ ['--i' as string]: i * 0.6 - 0.8 }}
+            className={cn('rk-fade rounded-xl px-3 py-2.5 text-[14.5px]', bad ? 'bg-[#fdf3f0]' : 'bg-background')}
           >
             {t}
           </li>
@@ -214,19 +191,19 @@ function LembagaTile() {
       <h3 className="text-[21px] font-extrabold leading-tight tracking-tight">Lihat wilayah yang belum terjangkau</h3>
       <div className="relative h-[170px] overflow-hidden rounded-2xl border border-primary-foreground/15 bg-primary-foreground/5" aria-hidden="true">
         {[
-          { l: '22%', t: '40%', s: 64, ok: true, d: 0 },
-          { l: '40%', t: '62%', s: 44, ok: true, d: 0.6 },
-          { l: '66%', t: '34%', s: 52, ok: false, d: 0 },
-          { l: '82%', t: '66%', s: 36, ok: true, d: 1.1 },
-          { l: '54%', t: '80%', s: 30, ok: false, d: 0.4 },
+          { l: '22%', t: '40%', s: 64, ok: true },
+          { l: '40%', t: '62%', s: 44, ok: true },
+          { l: '66%', t: '34%', s: 52, ok: false },
+          { l: '82%', t: '66%', s: 36, ok: true },
+          { l: '54%', t: '80%', s: 30, ok: false },
         ].map((c, i) => (
           <span
             key={i}
             className={cn(
               'absolute -translate-x-1/2 -translate-y-1/2 rounded-full',
-              c.ok ? 'rk-cov-ok border-2 border-gold bg-gold/25' : 'rk-cov-gap border-2 border-dashed border-[#f2a08f] bg-[#e5715a]/35'
+              c.ok ? 'border-2 border-gold bg-gold/25' : 'border-2 border-dashed border-[#f2a08f] bg-[#e5715a]/35'
             )}
-            style={{ left: c.l, top: c.t, width: c.s, height: c.s, animationDelay: `${c.d}s` }}
+            style={{ left: c.l, top: c.t, width: c.s, height: c.s }}
           />
         ))}
         {[['24%', '44%'], ['38%', '58%'], ['84%', '63%']].map(([l, t]) => (

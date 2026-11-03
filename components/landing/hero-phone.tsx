@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { prefersReducedMotion } from '@/components/motion/count-up';
+import { prefersReducedMotion } from '@/lib/motion';
 
 const LABELS = ['Langkah 1/3', 'Langkah 1/3', 'Langkah 2/3', 'Langkah 3/3'];
 const PINS: [number, number][] = [[58, 48], [240, 46], [222, 152], [96, 160], [270, 108]];
@@ -15,13 +15,13 @@ export function HeroPhone() {
       setStep(3);
       return;
     }
-    const t = setInterval(() => setStep((s) => (s + 1) % 4), 2600);
+    const t = setInterval(() => setStep((s) => (s + 1) % 4), 3800);
     return () => clearInterval(t);
   }, []);
 
   return (
     <div
-      className="rk-phone rk-float relative z-[2] flex w-[318px] max-w-full flex-col gap-3 rounded-[44px] border border-border bg-background px-3.5 pb-4 pt-5 text-foreground shadow-[0_50px_90px_-30px_rgba(0,0,0,0.6),0_0_90px_-20px_rgba(214,160,57,0.45)]"
+      className="rk-phone relative flex w-[318px] max-w-full flex-col gap-3 rounded-[44px] border border-border bg-background px-3.5 pb-4 pt-5 text-foreground shadow-[0_40px_80px_-30px_rgba(0,0,0,0.55)]"
       data-step={step}
       role="img"
       aria-label="Contoh alur di ponsel: mencari ustadz, 5 ustadz ditemukan, permintaan terkirim, lalu diambil ustadzah terdekat"
@@ -43,13 +43,6 @@ export function HeroPhone() {
           </g>
           <path d="M-10 180 C 60 150, 110 210, 170 170 S 250 130, 320 155" fill="none" stroke="#cfe2e8" strokeWidth="11" strokeLinecap="round" />
           <g stroke="#fff" strokeWidth="5" fill="none"><path d="M0 92h300M102 0v210M196 0v210" /></g>
-          <defs>
-            <linearGradient id="rk-phone-scan" x1="0" x2="1">
-              <stop offset="0" stopColor="#063c2c" stopOpacity="0" />
-              <stop offset="1" stopColor="#063c2c" stopOpacity=".3" />
-            </linearGradient>
-          </defs>
-          <path className="rk-scan" d="M150 105 L240 105 A90 90 0 0 0 213.6 41.4 Z" fill="url(#rk-phone-scan)" />
           {PINS.map(([cx, cy], i) => (
             <circle key={i} className="rk-mpin" style={{ ['--i' as string]: i }} cx={cx} cy={cy} r="10" fill="#063c2c" stroke="#fff" strokeWidth="3" />
           ))}
@@ -58,7 +51,7 @@ export function HeroPhone() {
         </svg>
       </div>
       <div className="relative min-h-[128px]">
-        <Panel s={0} title={<>Mencari ustadz terdekat<span className="rk-blink"><i>.</i><i>.</i><i>.</i></span></>}>
+        <Panel s={0} title="Mencari ustadz terdekat…">
           Lokasi hanya dipakai untuk pencarian, tidak ditampilkan ke publik.
         </Panel>
         <Panel s={1} title="Alhamdulillah, 5 ustadz terdekat" chips={['Ustadz · ±1 km', 'Ustadzah · ±6 km']}>
