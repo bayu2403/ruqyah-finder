@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,91 +13,63 @@ const navLinks = [
   { label: 'Edukasi', href: '/edukasi' },
 ];
 
-function Logo({ light = false }: { light?: boolean }) {
+function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5 group">
-      <div
-        className={`flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform group-hover:scale-105 ${
-          light ? 'ring-1 ring-primary-foreground/30' : ''
-        }`}
-      >
-        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2}>
+    <Link href="/" className="group flex items-center gap-2.5">
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden="true">
           <path d="M12 2L4 7v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-5z" strokeLinejoin="round" />
           <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </div>
-      <span className={`text-lg font-bold tracking-tight ${light ? 'text-primary-foreground' : 'text-foreground'}`}>
-        Ruqyah<span className={light ? 'text-gold' : 'text-primary'}>Ku</span>
+      </span>
+      <span className="text-lg font-extrabold tracking-tight text-foreground">
+        Ruqyah<span className="text-primary">Ku</span>
       </span>
     </Link>
   );
 }
 
-// `solid` is for pages without the dark hero behind the navbar.
-export function Navbar({ solid = false }: { solid?: boolean }) {
-  const [scrolledDown, setScrolled] = useState(false);
-  const scrolled = solid || scrolledDown;
+// A floating glass pill, the same on every page. `solid` is kept for callers
+// from before the redesign and no longer changes the look.
+export function Navbar(_props: { solid?: boolean } = {}) {
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-background/90 backdrop-blur-lg shadow-sm border-b border-border' : 'bg-transparent'
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 lg:h-20 items-center justify-between">
-          <Logo light={!scrolled} />
+    <header className="fixed inset-x-0 top-3 z-50">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="flex h-[62px] items-center gap-4 rounded-full border border-border/90 bg-background/80 pl-4 pr-2 shadow-[0_18px_40px_-22px_rgba(6,60,44,0.45)] backdrop-blur-xl backdrop-saturate-150">
+          <Logo />
 
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="ml-auto hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  scrolled ? 'text-foreground/80 hover:bg-secondary' : 'text-primary-foreground/90 hover:bg-primary-foreground/10'
-                }`}
+                className="rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2">
-            <Button
-              asChild
-              variant="outline"
-              className={
-                scrolled
-                  ? ''
-                  : 'border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground'
-              }
-            >
+          <div className="ml-auto hidden items-center gap-2 lg:ml-2 lg:flex">
+            <Button asChild variant="ghost" className="rounded-full">
               <Link href="/ustadz">Untuk Ustadz</Link>
             </Button>
-            <Button asChild variant="gold">
+            <Button asChild variant="gold" className="rk-shine rounded-full px-6">
               <Link href="/#ajukan">Ajukan Ruqyah</Link>
             </Button>
           </div>
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button
-                aria-label="Buka menu"
-                className={`lg:hidden rounded-lg p-2 ${scrolled ? 'text-foreground' : 'text-primary-foreground'}`}
-              >
-                <Menu className="h-6 w-6" />
+              <button aria-label="Buka menu" className="ml-auto rounded-full p-3 text-foreground hover:bg-secondary lg:hidden">
+                <Menu className="h-5 w-5" />
               </button>
             </SheetTrigger>
             <SheetContent side="right" aria-describedby={undefined}>
               <SheetTitle className="sr-only">Menu</SheetTitle>
-              <div className="flex items-center justify-between mb-8">
+              <div className="mb-8 flex items-center justify-between">
                 <Logo />
                 <SheetClose asChild>
                   <button aria-label="Tutup menu" className="rounded-lg p-2 hover:bg-secondary">
@@ -111,7 +83,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-foreground/80 hover:bg-secondary rounded-lg transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary"
                   >
                     <MapPin className="h-4 w-4 text-primary/50" />
                     {link.label}

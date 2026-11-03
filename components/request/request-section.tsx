@@ -16,6 +16,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { SectionHead } from '@/components/landing/section-head';
 import { FieldError } from '@/components/ui/field-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -108,19 +109,17 @@ export function RequestSection() {
   const radius = nearby.length ? Math.max(...nearby.map((n) => n.jarak_km)) : 0;
 
   return (
-    <section id="ajukan" className="bg-secondary/40 py-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
-          <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Ajukan Permintaan Ruqyah</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">
-            Tentukan lokasi Anda, isi data singkat, lalu ustadz terverifikasi terdekat yang tersedia akan
-            menghubungi Anda lewat WhatsApp.
-          </p>
-        </div>
+    <section id="ajukan" className="rounded-[40px] bg-secondary/60 py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHead
+          eyebrow="Ajukan permintaan"
+          title="Ajukan Permintaan Ruqyah"
+          lead="Tentukan lokasi Anda, isi data singkat, lalu ustadz terverifikasi terdekat yang tersedia akan menghubungi Anda lewat WhatsApp."
+        />
 
         {/* Mobile order: location → map → form. Desktop: map on the right spanning both cards. */}
         <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:grid-rows-[auto_1fr]">
-            <div className="rounded-xl border border-border bg-card p-6 shadow-sm lg:col-start-1 lg:row-start-1">
+            <div className="rounded-3xl border border-border bg-card p-6 shadow-sm lg:col-start-1 lg:row-start-1">
               <StepTitle n={1} title="Lokasi Anda" />
               <div className="mb-4 grid grid-cols-2 gap-2 rounded-lg bg-muted p-1" role="tablist">
                 {(['gps', 'wilayah'] as const).map((m) => (
@@ -197,7 +196,7 @@ export function RequestSection() {
             </div>
 
           <div className="flex flex-col gap-4 lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start">
-            <div className="relative h-[340px] overflow-hidden rounded-2xl border border-border bg-muted shadow-sm sm:h-[420px]">
+            <div className="relative h-[340px] overflow-hidden rounded-[28px] border border-border bg-muted shadow-[0_30px_60px_-30px_rgba(6,60,44,0.45)] sm:h-[420px]">
               <NearbyMap user={userPoint} ustadz={nearby} className="h-full w-full" />
               {!lokasi && (
                 <div className="pointer-events-none absolute inset-0 z-[400] flex items-center justify-center bg-background/60 p-6 text-center">
@@ -211,7 +210,7 @@ export function RequestSection() {
             {lokasi && <NearbySummary nearby={nearby} radius={radius} />}
           </div>
 
-            <div className={cn('rounded-xl border border-border bg-card p-6 shadow-sm lg:col-start-1 lg:row-start-2 lg:self-start', !lokasi && !submitted && 'opacity-60')}>
+            <div className={cn('rounded-3xl border border-border bg-card p-6 shadow-sm lg:col-start-1 lg:row-start-2 lg:self-start', !lokasi && !submitted && 'opacity-60')}>
               {submitted ? (
                 <Confirmation kasus={submitted} onReset={() => setSubmitted(null)} />
               ) : (
