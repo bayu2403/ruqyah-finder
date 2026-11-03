@@ -5,7 +5,7 @@ const services = [
   {
     icon: BookOpen,
     title: 'Ruqyah Syariah',
-    description: 'Sesi ruqyah sesuai tuntunan Al-Qur\'an dan Sunnah, dipandu ustadz bersertifikat.',
+    description: 'Sesi ruqyah sesuai tuntunan Al-Qur\'an dan Sunnah, dipandu ustadz terverifikasi.',
   },
   {
     icon: Users,

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Check, Stethoscope, X } from 'lucide-react';
 import { PageShell } from '@/components/page-shell';
 import { Button } from '@/components/ui/button';
+import { MITRA_LABEL } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: "Kenali Ruqyah Syar'i — RuqyahKu",
@@ -141,7 +142,7 @@ export default function EdukasiPage() {
       <section className="mt-12 rounded-2xl border border-border bg-secondary/50 p-6 sm:p-8">
         <h2 className="text-xl font-bold text-foreground">Menemui praktik menyimpang?</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Seluruh ustadz di RuqyahKu diverifikasi oleh lembaga. Jika ustadz yang menghubungi Anda melakukan salah
+          Seluruh ustadz di RuqyahKu diverifikasi oleh {MITRA_LABEL}. Jika ustadz yang menghubungi Anda melakukan salah
           satu tanda di atas, laporkan kepada kami agar dapat ditindaklanjuti.
         </p>
         <div className="mt-4 flex flex-col gap-2 sm:flex-row">

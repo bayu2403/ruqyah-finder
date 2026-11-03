@@ -78,6 +78,8 @@ New columns used by the mockup (marked `NEW` in `lib/types.ts`):
   (`needsAdmin` in `lib/matching.ts`); consider also notifying admins.
 - Adding an ustadz: admin places the exact map pin (mockup uses the
   kecamatan centroid). New ustadz start `terverifikasi = false`.
+- Coverage map (`lib/coverage.ts`): an admin-only SQL view aggregating
+  requests and available ustadz per kecamatan, with a date-range filter.
 
 ## 5. Other items
 

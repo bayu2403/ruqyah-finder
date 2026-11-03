@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BookOpen, HandHeart, LocateFixed, Lock, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { MITRA, MITRA_LABEL } from '@/lib/config';
 
 const heroImage =
   'https://images.pexels.com/photos/13693561/pexels-photo-13693561.jpeg?auto=compress&cs=tinysrgb&w=1920';
@@ -20,7 +21,7 @@ export function Hero() {
       <div className="mx-auto w-full max-w-4xl px-4 text-center sm:px-6 lg:px-8">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5 text-sm text-primary-foreground/90">
           <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          Penghubung ke ustadz ruqyah syar&apos;i terverifikasi
+          {MITRA.nama ? `Bekerja sama dengan ${MITRA.nama}` : 'Penghubung ke ustadz ruqyah syar\'i terverifikasi'}
         </div>
 
         <p dir="rtl" lang="ar" className="mb-4 font-arabic text-3xl text-gold sm:text-4xl">
@@ -59,7 +60,7 @@ export function Hero() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-primary-foreground/80">
           <div className="flex items-center gap-2 text-sm">
             <ShieldCheck className="h-4 w-4 text-gold" />
-            Ustadz diverifikasi lembaga
+            Ustadz diverifikasi {MITRA_LABEL}
           </div>
           <div className="flex items-center gap-2 text-sm">
             <HandHeart className="h-4 w-4 text-gold" />

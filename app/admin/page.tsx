@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PageShell } from '@/components/page-shell';
 import { AdminDashboard } from '@/components/admin/admin-dashboard';
+import { MITRA } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Admin Lembaga — RuqyahKu',
@@ -11,7 +12,7 @@ export default function AdminPage() {
   return (
     <PageShell
       eyebrow="Admin Lembaga"
-      title="Dashboard Admin"
+      title={MITRA.nama ? `Dashboard Admin — ${MITRA.nama}` : 'Dashboard Admin'}
       intro={
         <>
           Kelola ustadz dan pantau permintaan. Permintaan yang belum diambil lebih dari beberapa jam perlu

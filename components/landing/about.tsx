@@ -1,4 +1,5 @@
-import { BadgeCheck, ShieldCheck, Clock, MapPin } from 'lucide-react';
+import { BadgeCheck, ShieldCheck, Send, Lock } from 'lucide-react';
+import { MITRA_LABEL } from '@/lib/config';
 
 const aboutImage =
   'https://images.pexels.com/photos/39583568/pexels-photo-39583568.jpeg?auto=compress&cs=tinysrgb&w=1200';
@@ -6,23 +7,23 @@ const aboutImage =
 const features = [
   {
     icon: BadgeCheck,
-    title: 'Ustadz Bersertifikat MUI',
-    description: 'Setiap ustadz di platform kami telah lulus verifikasi dan bersertifikat dari lembaga resmi.',
+    title: 'Ustadz Terverifikasi',
+    description: `Setiap ustadz diverifikasi oleh ${MITRA_LABEL} sebelum dapat menerima permintaan, dan dapat dinonaktifkan bila ada laporan.`,
   },
   {
     icon: ShieldCheck,
     title: 'Ruqyah Sesuai Syariah',
-    description: 'Seluruh proses ruqyah mengikuti panduan Al-Qur\'an, Sunnah, dan tidak bertentangan dengan aqidah.',
+    description: 'Hanya ruqyah dengan Al-Qur\'an dan doa dari sunnah — tanpa jimat, mantra, atau ritual yang tidak ada tuntunannya.',
   },
   {
-    icon: Clock,
-    title: 'Respons Cepat & Mudah',
-    description: 'Cari ustadz, lihat kontaknya, dan hubungi langsung hanya dalam beberapa langkah.',
+    icon: Send,
+    title: 'Cukup Satu Permintaan',
+    description: 'Kirim permintaan sekali, ustadz terdekat yang tersedia akan menghubungi Anda lewat WhatsApp.',
   },
   {
-    icon: MapPin,
-    title: 'Jangkauan Lokasi Luas',
-    description: 'Ustadz tersebar di berbagai kota di Indonesia, terus bertambah dari waktu ke waktu.',
+    icon: Lock,
+    title: 'Privasi Terjaga',
+    description: 'Nomor dan keluhan Anda hanya terlihat oleh satu ustadz yang mengambil permintaan Anda.',
   },
 ];
 
@@ -39,8 +40,8 @@ export function About() {
               <BadgeCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Bersertifikat MUI</p>
-              <p className="text-xs text-muted-foreground">Terverifikasi resmi</p>
+              <p className="text-sm font-semibold text-foreground">Ustadz terverifikasi</p>
+              <p className="text-xs text-muted-foreground">oleh {MITRA_LABEL}</p>
             </div>
           </div>
         </div>
