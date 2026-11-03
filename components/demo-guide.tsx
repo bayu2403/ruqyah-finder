@@ -51,7 +51,7 @@ const SCENARIOS: Scenario[] = [
         text: 'Buka halaman Admin. Di "Peta cakupan", lingkaran merah bergaris putus menandai wilayah yang punya permintaan tetapi belum ada ustadz.',
         link: { href: '/admin/', label: 'Buka halaman Admin' },
       },
-      { text: 'Klik "Bogor Tengah" di daftar "Prioritas rekrutmen ustadz" untuk memperbesar peta ke wilayah itu.' },
+      { text: 'Klik "Bogor Tengah" di daftar "Wilayah belum terjangkau" untuk memperbesar peta ke wilayah itu.' },
       {
         text: 'Di bagian "Permintaan" → "Perlu ditugaskan", pilih ustadz untuk salah satu permintaan lalu tekan "Tugaskan".',
         done: 'tugaskan',
@@ -61,7 +61,7 @@ const SCENARIOS: Scenario[] = [
         done: 'tambah',
       },
       {
-        text: 'Centang "Terverifikasi" pada ustadz baru. Bogor Tengah hilang dari daftar prioritas, dan ustadz baru muncul di peta Beranda saat Anda memilih wilayah Bogor.',
+        text: 'Centang "Terverifikasi" pada ustadz baru. Bogor Tengah hilang dari daftar wilayah belum terjangkau, dan ustadz baru muncul di peta Beranda saat Anda memilih wilayah Bogor.',
         done: 'verifikasi',
       },
     ],

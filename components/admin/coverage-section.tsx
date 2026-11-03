@@ -53,11 +53,11 @@ export function CoverageSection({ ustad, kasus }: { ustad: Ustad[]; kasus: Kasus
         <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <h3 className="flex items-center gap-2 font-semibold text-foreground">
             <MapPinned className="h-5 w-5 text-gold" />
-            Prioritas rekrutmen ustadz
+            Wilayah belum terjangkau
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
             {kosong > 0
-              ? `${kosong} kecamatan punya permintaan tetapi belum ada ustadz dalam ${POOL_RADIUS_KM} km.`
+              ? `${kosong} kecamatan punya permintaan tetapi belum ada ustadz dalam ${POOL_RADIUS_KM} km. Bahan perencanaan penugasan atau pembinaan ustadz lembaga.`
               : 'Semua kecamatan dengan permintaan sudah memiliki ustadz di sekitarnya.'}
           </p>
           {priority.length > 0 && (

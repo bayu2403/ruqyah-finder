@@ -20,7 +20,7 @@ that needs a real backend is marked `TODO(BE)` in the code and listed in
 |---|---|---|
 | `/` | Public | Landing page and request flow: GPS or region dropdown → map with the 5 nearest verified ustadz (approximate areas only) → name, WhatsApp, service, preference → submit to the pool |
 | `/ustadz/` | Ustadz | Pool of nearby waiting requests. "Ambil" claims one (it disappears for everyone else) and only then reveals the user's name and number, with a pre-filled WhatsApp link |
-| `/admin/` | Organisation admin | Coverage map of requests vs. available ustadz with a recruitment-priority list, request overview, manual assignment of requests nobody took within 6 hours, verify/activate/add ustadz, reset demo data |
+| `/admin/` | Organisation admin | Coverage map of requests vs. available ustadz with a list of areas not yet reached, request overview, manual assignment of requests nobody took within 6 hours, verify/activate/add ustadz, reset demo data |
 | `/edukasi/` | Public | How to recognise ruqyah syar'i vs. practices that misuse the name |
 | `/ruqyah-mandiri/` | Public | Self-ruqyah guide: Al-Fatihah, Ayat Kursi, end of Al-Baqarah, the three Quls, two du'a |
 
