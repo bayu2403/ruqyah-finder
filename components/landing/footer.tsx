@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Mail, Phone } from 'lucide-react';
+import { MITRA } from '@/lib/config';
 
 // lucide-react dropped brand/logo icons (trademark reasons), so social icons
 // are small inline SVGs instead of lucide imports.
@@ -68,6 +69,9 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               Menghubungkan Anda dengan ustadz ruqyah syari terverifikasi terdekat.
             </p>
+            {MITRA.nama && (
+              <p className="mt-2 text-sm font-medium text-foreground">Bekerja sama dengan {MITRA.nama}</p>
+            )}
             <div className="mt-4 flex gap-3 text-muted-foreground">
               <a href="#" aria-label="Facebook" className="hover:text-primary"><FacebookIcon className="h-5 w-5" /></a>
               <a href="#" aria-label="Instagram" className="hover:text-primary"><InstagramIcon className="h-5 w-5" /></a>

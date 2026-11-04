@@ -20,7 +20,7 @@ that needs a real backend is marked `TODO(BE)` in the code and listed in
 |---|---|---|
 | `/` | Public | Landing page and request flow: GPS or region dropdown → map with the 5 nearest verified ustadz (approximate areas only) → name, WhatsApp, service, preference → submit to the pool |
 | `/ustadz/` | Ustadz | Pool of nearby waiting requests. "Ambil" claims one (it disappears for everyone else) and only then reveals the user's name and number, with a pre-filled WhatsApp link |
-| `/admin/` | Organisation admin | Request overview, manual assignment of requests nobody took within 6 hours, verify/activate/add ustadz, reset demo data |
+| `/admin/` | Organisation admin | Coverage map of requests vs. available ustadz with a list of areas not yet reached, request overview, manual assignment of requests nobody took within 6 hours, verify/activate/add ustadz, reset demo data |
 | `/edukasi/` | Public | How to recognise ruqyah syar'i vs. practices that misuse the name |
 | `/ruqyah-mandiri/` | Public | Self-ruqyah guide: Al-Fatihah, Ayat Kursi, end of Al-Baqarah, the three Quls, two du'a |
 
@@ -64,10 +64,17 @@ npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. To demo the full flow, submit a request on
+Open <http://localhost:3000>. A **Panduan Demo** button on every page walks
+visitors through the three roles (pemohon, ustadz, admin lembaga) and ticks
+each step off as they complete it. To demo the full flow, submit a request on
 `/`, then open `/ustadz/` (pick "Ustadz Ahmad Fauzi" for Jakarta Selatan)
 and `/admin/` in other tabs. "Reset data demo" at the bottom of `/admin/`
 restores the sample data.
+
+**Before a presentation**, set the partner organisation's name in
+`lib/config.ts` (`MITRA.nama`). It then appears in the hero badge, footer,
+"About" section, education page and admin title. While it's `null` the site
+uses neutral wording ("lembaga mitra").
 
 `npm run build` produces the static site in `out/`, which the GitHub Pages
 workflow deploys.

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { AlertTriangle, ClipboardList, RotateCcw, UserPlus, Users } from 'lucide-react';
+import { CoverageSection } from '@/components/admin/coverage-section';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FieldError } from '@/components/ui/field-error';
@@ -50,6 +51,8 @@ export function AdminDashboard() {
         <Stat label={`Perlu ditugaskan (>${ESCALATE_AFTER_H} jam)`} value={counts.perlu} icon={AlertTriangle} warn={counts.perlu > 0} />
         <Stat label="Ustadz siap menerima" value={counts.ustadSiap} icon={Users} />
       </div>
+
+      <CoverageSection ustad={db.ustad} kasus={db.kasus} />
 
       <section>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">

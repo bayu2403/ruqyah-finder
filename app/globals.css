@@ -81,3 +81,46 @@
   background-image: radial-gradient(circle at 1px 1px, hsl(var(--primary-foreground) / 0.08) 1px, transparent 0);
   background-size: 24px 24px;
 }
+
+/* ---------- Motion ----------
+   Natural, not decorative: content fades in once with a short rise, state
+   changes cross-fade, nothing loops except the "you are here" pulse. */
+:root {
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-enter: 600ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes rk-fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes rk-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rk-pulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(3); } }
+
+.rk-enter { animation: rk-fade-up var(--duration-enter) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms + 60ms); }
+.rk-fade { animation: rk-fade var(--duration-base) ease-out both; }
+@supports (animation-timeline: view()) {
+  .rk-reveal { animation: rk-fade-up linear both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
+}
+.rk-ring { transform-box: fill-box; transform-origin: center; animation: rk-pulse 3s ease-out infinite; }
+
+/* Hero phone: screens cross-fade as the request moves along */
+.rk-phone .rk-step-bar::after { content: ""; position: absolute; inset: 0; background: hsl(var(--primary)); transform: scaleX(0); transform-origin: left; transition: transform 400ms var(--ease-out); }
+.rk-phone[data-step="1"] .rk-step-bar:nth-child(-n + 1)::after,
+.rk-phone[data-step="2"] .rk-step-bar:nth-child(-n + 2)::after,
+.rk-phone[data-step="3"] .rk-step-bar::after { transform: scaleX(1); }
+.rk-phone .rk-mpin { opacity: 0; transition: opacity 400ms ease-out; }
+.rk-phone:not([data-step="0"]) .rk-mpin { opacity: 1; transition-delay: calc(var(--i, 0) * 60ms); }
+.rk-phone .rk-panel { opacity: 0; transition: opacity 350ms ease-out; }
+.rk-phone[data-step="0"] .rk-panel[data-s="0"],
+.rk-phone[data-step="1"] .rk-panel[data-s="1"],
+.rk-phone[data-step="2"] .rk-panel[data-s="2"],
+.rk-phone[data-step="3"] .rk-panel[data-s="3"] { opacity: 1; }
+
+.rk-faq summary::-webkit-details-marker { display: none; }
+.rk-faq summary::after { content: ""; flex: none; width: 10px; height: 10px; border-right: 2px solid hsl(var(--primary)); border-bottom: 2px solid hsl(var(--primary)); transform: rotate(45deg) translateY(-3px); transition: transform 200ms ease-out; }
+.rk-faq details[open] summary::after { transform: rotate(-135deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0ms !important; scroll-behavior: auto !important; }
+  .rk-phone .rk-mpin { opacity: 1; }
+}
